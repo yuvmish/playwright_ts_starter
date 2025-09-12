@@ -13,13 +13,13 @@ interface Address {
 }
 
 interface User {
-  readonly id: UserId;        // readonly prevents accidental mutation
+  readonly id: UserId; // readonly prevents accidental mutation
   name: string;
   email: string;
-  role: Role;                 // enum below
+  role: Role; // enum below
   address: Address;
   // Union type for status
-  status: "active" | "inactive" | "pending"| "suspended";
+  status: "active" | "inactive" | "pending" | "suspended";
 }
 
 // 2) Enums (string enums are clearer in logs)
@@ -60,7 +60,10 @@ const demoUser: User = {
 
 console.log("canAccessTestDashboard(demoUser) ->", canAccessTestDashboard(demoUser));
 // Try a patch
-const updated = applyUserPatch(demoUser, { status: "inactive", address: { ...demoUser.address, city: "Haifa", timezone: "Asia/Jerusalem" } });
+const updated = applyUserPatch(demoUser, {
+  status: "inactive",
+  address: { ...demoUser.address, city: "Haifa", timezone: "Asia/Jerusalem" },
+});
 console.log("Updated user:", updated);
 
 // === TODOs for you (complete these in ~10 minutes) ===
@@ -83,14 +86,14 @@ const devUser: User = {
 
 console.log("canAccessTestDashboard(devUser) ->", canAccessTestDashboard(devUser));
 
-const newUser:User={
-    id: "u_789",
-    name: "Suspended User",
-    email: "suspended@example.com",
-    role: Role.Admin,
+const newUser: User = {
+  id: "u_789",
+  name: "Suspended User",
+  email: "suspended@example.com",
+  role: Role.Admin,
 
-    address: { street: "3 Suspended St", city: "Tel Aviv", country: "IL" },
-    status: "active",
+  address: { street: "3 Suspended St", city: "Tel Aviv", country: "IL" },
+  status: "active",
 };
 console.log("canAccessTestDashboard(newUser) ->", canAccessTestDashboard(newUser));
 // 2) Try to mutate demoUser.id = "new"; // should ERROR because readonly
