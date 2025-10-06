@@ -32,6 +32,7 @@ test.describe("TodoMVC selectors demo", () => {
     await editor.press("Enter");
     await expect(items.filter({ hasText: "walk dog (evening)" })).toHaveCount(1);
 
+    // Delete the first item
     await milk.hover();
     await milk.locator(".destroy").click();
     await expect(items).toHaveCount(1);
