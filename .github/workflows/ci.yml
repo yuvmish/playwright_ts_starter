@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      REQERS_KEY: ${{ secrets.REQERS_API_KEY ||'reqers-free-v1'}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Lint & Type-Check
+        run: |
+          npm run lint 
+          npm run format:check
+
+      - name: Run UI Tests
+        run: npx playwright test tests/ui --reporter=html
+
+      - name: Run API Tests
+        run: npx playwright test tests/api --reporter=html
+
+      - name: Upload HTML Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-reports
+          path: playwright-report
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload Traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traces
+          path: |
+            test-results/**/*.zip
+            test-results/**/trace.zip
+          if-no-files-found: ignore
+          retention-days: 7
