@@ -44,7 +44,7 @@ export function canAccessTestDashboard(user: User): boolean {
 // 5) Another function: safe "update" using Partial + spread
 export function applyUserPatch(user: User, patch: PartialUser): User {
   // Don't allow id changes even if provided in patch
-  const { id: _ignore, ...rest } = patch;
+  const { id: _unused, ...rest } = patch;
   return { ...user, ...rest };
 }
 
