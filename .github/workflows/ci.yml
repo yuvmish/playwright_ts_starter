@@ -8,7 +8,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      REQERS_KEY: ${{ secrets.REQERS_API_KEY ||'reqers-free-v1'}}
+      REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
 
     steps:
       - name: Checkout

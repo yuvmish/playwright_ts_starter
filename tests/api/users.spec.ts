@@ -9,7 +9,7 @@ test.use({
 });
 
 test.describe("Users API (reqres.in)", () => {
-  test.skip("GET /users?page=2 → 200 + schema OK", async ({ request, baseURL }) => {
+  test("GET /users?page=2 → 200 + schema OK", async ({ request, baseURL }) => {
     const res = await request.get(`${baseURL}/users`, { params: { page: 2 } });
     expect(res.ok()).toBeTruthy();
     console.log("Status:", res.status());
@@ -27,7 +27,7 @@ test.describe("Users API (reqres.in)", () => {
     }
   });
 
-  test.skip("POST /users → 201 + schema OK", async ({ request, baseURL }) => {
+  test("POST /users → 201 + schema OK", async ({ request, baseURL }) => {
     const payload = { name: "Dana QA", job: "tester" };
     const res = await request.post(`${baseURL}/users`, { data: payload });
     expect(res.status()).toBe(201);
