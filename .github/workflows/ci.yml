@@ -61,4 +61,5 @@ jobs:
         run: |
           STATUS=${{ job.status }}
           curl -X POST -H 'Content-type: application/json' \
-          --data '{\"text\":robot_face:GitHub action finished with *$STATUS* on repo ${{github.repository}}* (run:${{github.run_id}} }}\"}" \ ${{ secrets.SLACK_WEBHOOK_URL }}
+          --data-raw "{\"text\":robot_face: GitHub action finished with *$STATUS* on repo ${{ github.repository }}* (run:${{ github.run_id }})\"}" \ 
+          ${{ secrets.SLACK_WEBHOOK_URL }}
