@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
-
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -62,4 +62,4 @@ jobs:
           STATUS=${{ job.status }}
           curl -X POST -H 'Content-type: application/json' \
           --data-raw "{\"text\":robot_face: GitHub action finished with *$STATUS* on repo ${{ github.repository }}* (run:${{ github.run_id }})\"}" \ 
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+          $SLACK_WEBHOOK_URL
