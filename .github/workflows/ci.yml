@@ -59,7 +59,13 @@ jobs:
       - name: Notify to Slack
         if: always()
         run: |
+          if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            echo "No SLACK_WEBHOOK_URL secret set, skipping Slack notification."
+            exit 0
+          fi
+
           STATUS=${{ job.status }}
-          curl -X POST -H 'Content-type: application/json' \
-          --data-raw "{\"text\":robot_face: GitHub action finished with *$STATUS* on repo ${{ github.repository }}* (run:${{ github.run_id }})\"}" \ 
-          $SLACK_WEBHOOK_URL
+          curl -X POST \
+            -H 'Content-type: application/json' \
+            --data "{\"text\":\":robot_face: CI finished with *$STATUS* on *${{ github.repository }}* (run ${{ github.run_id }})\"}" \
+            "${{ secrets.SLACK_WEBHOOK_URL }}"
