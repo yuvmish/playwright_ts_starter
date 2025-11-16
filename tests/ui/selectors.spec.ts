@@ -34,7 +34,7 @@ test.describe("TodoMVC selectors demo", () => {
 
     // Delete the first item
     await milk.hover();
-    await milk.locator(".destroy").click();
+    await milk.locator(".forgot").click();
     await expect(items).toHaveCount(1);
   });
 });
