@@ -59,27 +59,25 @@ jobs:
       - name: Notify to Slack
         if: always()
         run: |
-
           STATUS=${{ job.status }}
-           curl -X POST \
+          curl -X POST \
              -H 'Content-type: application/json' \
              --data "{\"text\":\":robot_face: CI finished with *$STATUS* on *${{ github.repository }}* (run ${{ github.run_id }})\"}" \
              "${{ secrets.SLACK_WEBHOOK_URL }}"
-         name: Notify to whatsapp
-         if: always()
-         run: |
-          if [-z "{{ secrets.TWILIO_SID }}" ] || [ -z "{{ secrets.TWILIO_KEY_SID }}" ] ||["{{secrets.TWILIO_KEY_SECRET}}"] [ -z "{{ secrets.TWILIO_WHATSAPP_FROM }}" ] || [ -z "{{ secrets.TWILIO_TO }}" ]; then
+      - name: Notify to whatsapp
+        if: always()
+        run: |
+          if [ -z "${{ secrets.TWILIO_SID }}" ] || [ -z "${{ secrets.TWILIO_KEY_SID }}" ] || [ -z "${{ secrets.TWILIO_KEY_SECRET }}" ] || [ -z "${{ secrets.TWILIO_WHATSAPP_FROM }}" ] || [ -z "${{ secrets.TWILIO_TO }}" ]; then
             echo "Twilio credentials are not set. Skipping WhatsApp notification."
             exit 0
           fi
           STATUS=${{ job.status }}
-          Massage="🤖 CI finished with status:*$STATUS* on *${{ github.repository }}* (run ${{ github.run_id }})"
+          MESSAGE="🤖 CI finished with status: *$STATUS* on *${{ github.repository }}* (run ${{ github.run_id }})"
 
 
 
-          curl -X POST "https://api.twilio.com/2010-04-01/Accounts/{{ secrets.TWILIO_SID }}/Messages.json" \
-          ---data-urlencode "From=whatsapp:{{ secrets.TWILIO_WHATSAPP_FROM }}" \
-          --data-urlencode "To=whatsapp:{{ secrets.TWILIO_TO }}" \
-          --data-urlencode "Body=$Massage" \
-          -u "${{ secrets.TWILIO_SID }}:${{ secrets.TWILIO_KEY_SECRET }}"    
-
+          curl -X POST "https://api.twilio.com/2010-04-01/Accounts/${{ secrets.TWILIO_SID }}/Messages.json" \
+          --data-urlencode "From=${{ secrets.TWILIO_WHATSAPP_FROM }}" \
+          --data-urlencode "To=${{ secrets.TWILIO_TO }}" \
+          --data-urlencode "Body=$MESSAGE" \
+          -u "${{ secrets.TWILIO_SID }}:${{ secrets.TWILIO_KEY_SECRET }}"
