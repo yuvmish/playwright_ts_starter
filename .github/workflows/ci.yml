@@ -80,4 +80,4 @@ jobs:
           --data-urlencode "From=${{ secrets.TWILIO_WHATSAPP_FROM }}" \
           --data-urlencode "To=${{ secrets.TWILIO_TO }}" \
           --data-urlencode "Body=$MESSAGE" \
-          -u "${{ secrets.TWILIO_SID }}:${{ secrets.TWILIO_KEY_SECRET }}"
+          -u "${{ secrets.TWILIO_KEY_SID }}:${{ secrets.TWILIO_KEY_SECRET }}"
