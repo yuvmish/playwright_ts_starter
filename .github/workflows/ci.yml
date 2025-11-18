@@ -91,9 +91,10 @@ jobs:
           STATUS=${{ job.status }} 
           REPO=${{ github.repository }}
           RUN=${{ github.run_id }}
-          TEXT = "🤖 CI finished with status: *$STATUS* on *$REPO* (run $RUN)"
+          TEXT="🤖 CI finished with status: *$STATUS* on *$REPO* (run $RUN)"
 
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+
+          curl -sS-X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
           -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-          -d text="$TEXT" \
-          -d parse_mode="Markdown"
+          -d parse_mode="Markdown" \
+          --data-urlencode "text=$TEXT"
